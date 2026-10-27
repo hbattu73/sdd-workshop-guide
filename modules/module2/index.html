@@ -1,0 +1,1338 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Hands-on workshop for spec-driven development with agentic coding tools: requirements, spec, implementation, and verification.">
+      
+      
+        <meta name="author" content="Hemanth Battu">
+      
+      
+        <link rel="canonical" href="https://hbattu73.github.io/sdd-workshop-guide/modules/module2/">
+      
+      
+        <link rel="prev" href="../module1/">
+      
+      
+        <link rel="next" href="../module3/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.46">
+    
+    
+      
+        <title>Module 2: Spec Implementation - Agentic Engineering in Practice</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.19d3147f.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.dfe2e883.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../presentation/viewer.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-2-spec-implementation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Agentic Engineering in Practice" class="md-header__button md-logo" aria-label="Agentic Engineering in Practice" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-blocks" viewBox="0 0 24 24"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect width="8" height="8" x="14" y="2" rx="1"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Agentic Engineering in Practice
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Module 2: Spec Implementation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../prework/" class="md-tabs__link">
+          
+  
+  Prework
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../presentation/" class="md-tabs__link">
+          
+  
+  Presentation
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  Modules
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Agentic Engineering in Practice" class="md-nav__button md-logo" aria-label="Agentic Engineering in Practice" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-blocks" viewBox="0 0 24 24"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect width="8" height="8" x="14" y="2" rx="1"/></svg>
+
+    </a>
+    Agentic Engineering in Practice
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Home
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Home
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../prework/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Prework
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Prework
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../presentation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Presentation
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Presentation
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Modules
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Modules
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Module 0: Get to Know Your Agentic Tool
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Module 1: Requirements Gathering and Spec Creation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Module 2: Spec Implementation
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Module 2: Spec Implementation
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-start-a-fresh-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1. Start a fresh session
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-set-the-guardrails" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2. Set the guardrails
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-hand-it-the-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3. Hand it the spec
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Hand it the spec">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        The loop
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-supervise-against-the-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        4. Supervise against the spec
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Supervise against the spec">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#if-a-phase-drifts" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        If a phase drifts
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-a-phase-fails-and-keeps-failing" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        If a phase fails and keeps failing
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-it-derails" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        If it derails
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-confirm-the-finish" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        5. Confirm the finish
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-demonstrated" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        What this module demonstrated
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Module 3: Validation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-start-a-fresh-session" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1. Start a fresh session
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-set-the-guardrails" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2. Set the guardrails
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-hand-it-the-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3. Hand it the spec
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Hand it the spec">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        The loop
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-supervise-against-the-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        4. Supervise against the spec
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Supervise against the spec">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#if-a-phase-drifts" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        If a phase drifts
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-a-phase-fails-and-keeps-failing" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        If a phase fails and keeps failing
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#if-it-derails" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        If it derails
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-confirm-the-finish" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        5. Confirm the finish
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-demonstrated" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        What this module demonstrated
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+<h1 id="module-2-spec-implementation">Module 2: Spec Implementation<a class="headerlink" href="#module-2-spec-implementation" title="Permanent link">&para;</a></h1>
+<p>One prompt, a new session, and a few minutes of watching. The spec from Module 1 does the work; you supervise against it.</p>
+<p>Your design decisions are already in the spec. Human ownership here means holding the agent to it, not re-deciding.</p>
+<p>Everything in a grey code block is pasted to Bob verbatim. The <strong>Expect</strong> and <strong>Notice</strong> notes describe what a good run looks like.</p>
+<div class="admonition info">
+<p class="admonition-title">Before you start</p>
+<ul>
+<li><code>requirements.md</code> is marked decided and <code>spec.md</code> has its phases and traceability table. Nothing else from Module 1 carries forward.</li>
+<li><code>git status</code> shows only those two files as new. Everything else is clean. That clean tree is your undo button for this module.</li>
+<li>The app is not running (<code>Ctrl</code>+<code>C</code> on <code>npm run dev</code> if it is). The tests don't need it, and a dev server holding the database open can confuse a migration.</li>
+</ul>
+</div>
+<hr />
+<h2 id="1-start-a-fresh-session">1. Start a fresh session<a class="headerlink" href="#1-start-a-fresh-session" title="Permanent link">&para;</a></h2>
+<p>Click <strong>New task</strong> in the Bob panel. Do not continue the Module 1 conversation.</p>
+<p><strong>Why.</strong> Module 1's conversation holds everything the agent picked up along the way: subagent summaries, dead ends, earlier drafts, your interview answers.</p>
+<ul>
+<li>Run Module 2 in that session and you can't tell whether it built from the spec or from memory.</li>
+<li>Run it fresh and <code>spec.md</code> has to carry the work on its own. The spec is the handoff; a cold context is what forces it to be one. If the build goes wrong, the spec was missing something, and that's a spec fix.</li>
+<li>This is also the real case: the person implementing is often not the person who wrote the spec, and that session is gone.</li>
+</ul>
+<h2 id="2-set-the-guardrails">2. Set the guardrails<a class="headerlink" href="#2-set-the-guardrails" title="Permanent link">&para;</a></h2>
+<p><img alt="Agent mode selected; Permissions dropdown open with Auto-approve on" src="../../assets/module2/guardrails.png" /></p>
+<p>Set the mode selector to <strong>Agent</strong>. In the Permissions dropdown, turn on the master <strong>Auto-approve</strong> switch. Bob will not ask you anything until it's done or stuck.</p>
+<p><strong>Why everything.</strong> Each phase is several file edits and at least one test run. Approving by hand turns a short build into a long clicking exercise, and you stop reading the cards after the fifth. This is the highest-autonomy stretch of the workshop, and you've earned it: every decision that reached this point went through you.</p>
+<p><strong>What's actually protecting you.</strong> Not the permissions. Three things:</p>
+<ol>
+<li><code>AGENTS.md</code> says <em>do not commit or push unless asked</em>, so nothing leaves your working tree.</li>
+<li>The tree was clean, so <code>git restore .</code> undoes everything.</li>
+<li>The spec's per-phase checks give you a place to stop after every phase.</li>
+</ol>
+<p>Permissions decide how often Bob asks. Those three decide how much damage a bad run can do.</p>
+<h2 id="3-hand-it-the-spec">3. Hand it the spec<a class="headerlink" href="#3-hand-it-the-spec" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Implement @spec.md phase by phase. Run each phase&#39;s checks and report before moving to the next.
+</span></code></pre></div>
+<p><strong>Autonomy is highest here and human ownership lowest.</strong> What's left is implementation detail, and that's the agent's to hammer out on its own.</p>
+<p><img alt="The end-of-run summary: one row per phase with what changed and which checks passed" src="../../assets/module2/phase-report.png" /></p>
+<p><strong>Expect.</strong> Bob reads <code>spec.md</code>, <code>AGENTS.md</code>, and the files the first phase names. Then, for each phase:</p>
+<ul>
+<li>the edits the phase lists</li>
+<li>that phase's checks, run</li>
+<li>a short report: what changed, which check ran, pass or fail</li>
+</ul>
+<p>At the end, a summary of what every phase changed. A few things look like trouble and aren't: a check that fails once and gets fixed and rerun (that's the loop working), and a long pause on the first phase while it reads.</p>
+<p><strong>Why the prompt is short.</strong> Everything that would normally go in a long implementation prompt is already in the files Bob reads. The spec says what to build and how to check it. <code>AGENTS.md</code> says how code is written here, which commands to run, and what not to do. The prompt only has to say <em>follow the spec</em> and <em>stop and check at each phase boundary</em>. If you find yourself adding instructions to this prompt, they belong in one of those two files instead.</p>
+<p><strong>Why "report before moving to the next."</strong> Without it Bob still runs the checks but tends to batch the reporting at the end. With it, every phase boundary becomes a point where you can read a short report and decide to let it continue. You are not approving each phase (Auto-approve is on), but you can interrupt at any boundary.</p>
+<h3 id="the-loop">The loop<a class="headerlink" href="#the-loop" title="Permanent link">&para;</a></h3>
+<p>What you're watching is a loop, and naming its parts is what lets you reason about it when it misbehaves:</p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>In this run</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Goal</strong></td>
+<td>The current phase's <em>Changes</em> and <em>Satisfies</em> lines in <code>spec.md</code></td>
+</tr>
+<tr>
+<td><strong>Act</strong></td>
+<td>Edit the named files, write the named tests</td>
+</tr>
+<tr>
+<td><strong>Observe</strong></td>
+<td>Run that phase's how-to-check commands</td>
+</tr>
+<tr>
+<td><strong>Decide</strong></td>
+<td>Green → next phase. Red → read the output, fix, run again</td>
+</tr>
+<tr>
+<td><strong>Carry forward</strong></td>
+<td>Only what the next phase needs: the spec, the files on disk, the test results</td>
+</tr>
+</tbody>
+</table>
+<p>The spec is the loop condition. A phase is done when its checks pass, and the agent can't declare itself done any other way. Compare that with an agent given "implement the freeze feature" and no spec: the loop has no exit condition except the agent's own opinion that it's finished.</p>
+<p><strong>Notice.</strong></p>
+<ul>
+<li>The reports stay short. Bob reads a great deal while building, but the summary at each boundary is a few lines. That's the same context discipline as Module 1's subagents, applied inside one session.</li>
+<li>Where it runs tests. If it runs <code>npm test -w api</code> after a web change, or runs the whole suite after every edit, the spec's how-to-check section was too loose. Note it; that's a Module 1 fix for next time.</li>
+<li>The context counter. It climbs through the run. If a phase fails repeatedly, the counter is the first thing to check: an agent with several failed attempts in its context tends to repeat them.</li>
+</ul>
+<h2 id="4-supervise-against-the-spec">4. Supervise against the spec<a class="headerlink" href="#4-supervise-against-the-spec" title="Permanent link">&para;</a></h2>
+<p>You're not reviewing code yet. You're checking that each phase report matches what the spec said that phase would do. Keep <code>spec.md</code> open beside the chat.</p>
+<p>Three things to compare at each boundary:</p>
+<ol>
+<li><strong>Files.</strong> The report names the files it changed. The spec's Changes list names the files it should have. Same list?</li>
+<li><strong>Check.</strong> The report names the command it ran. The spec's how-to-check section names the command. Same command, and did it actually pass, or did Bob say "tests pass" without output?</li>
+<li><strong>Scope.</strong> Anything in the report the spec didn't ask for? A refactor, an extra endpoint, a helpful improvement. Those are the things that break later.</li>
+</ol>
+<h3 id="if-a-phase-drifts">If a phase drifts<a class="headerlink" href="#if-a-phase-drifts" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Phase N was supposed to X. It did Y. Fix it to match the spec — don&#39;t change the spec.
+</span></code></pre></div>
+<p><strong>Expect.</strong> Bob rereads the phase, undoes or adjusts the extra work, reruns the check, and reports again.</p>
+<p><strong>Why "don't change the spec."</strong> An agent that notices a mismatch between its work and the spec will sometimes resolve it by editing the spec. That erases the evidence and makes the next phase build on the drift. The spec is the contract; if it's wrong, you change it deliberately in Module 1's terms, not as a side effect of a fix.</p>
+<h3 id="if-a-phase-fails-and-keeps-failing">If a phase fails and keeps failing<a class="headerlink" href="#if-a-phase-fails-and-keeps-failing" title="Permanent link">&para;</a></h3>
+<p>Let it try twice. On the third red run, stop it and read the failure output yourself. Usually it's one of:</p>
+<ul>
+<li>the spec's check references a test the changes never created (spec fix)</li>
+<li>a command can't run because something is still holding a resource, usually the dev server (stop it, rerun)</li>
+<li>a type error in a file the spec didn't name (one-line hint to Bob)</li>
+</ul>
+<h3 id="if-it-derails">If it derails<a class="headerlink" href="#if-it-derails" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>git<span class="w"> </span>restore<span class="w"> </span>.
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>git<span class="w"> </span>clean<span class="w"> </span>-n
+</span></code></pre></div>
+<p>Rollback (the icon on your message in the chat) undoes what Bob did in this task. <code>git restore .</code> undoes everything in tracked files regardless of which task did it. Run <code>git clean -n</code> to <em>list</em> new untracked files; delete by hand only the ones Bob created. Then start a new task and paste the prompt again.</p>
+<div class="admonition danger">
+<p class="admonition-title">Never <code>git clean -f</code> or <code>git clean -fd</code></p>
+<p>It deletes every untracked file, including <code>requirements.md</code>, <code>spec.md</code>, <code>api/.env</code> and the database. There is no undo. <code>git clean -n</code> with the <code>n</code> lists without deleting; that's the only form to use here.</p>
+</div>
+<hr />
+<h2 id="5-confirm-the-finish">5. Confirm the finish<a class="headerlink" href="#5-confirm-the-finish" title="Permanent link">&para;</a></h2>
+<p>When Bob reports the last phase green, run the checks yourself in the terminal:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>npm<span class="w"> </span>run<span class="w"> </span>typecheck<span class="w"> </span>-w<span class="w"> </span>api<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>typecheck<span class="w"> </span>-w<span class="w"> </span>web
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>npm<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-w<span class="w"> </span>api<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-w<span class="w"> </span>web
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>git<span class="w"> </span>status
+</span></code></pre></div>
+<p>Green, green, and a <code>git status</code> that shows changes only under <code>api/</code> and <code>web/</code> plus the migration folder.</p>
+<p>Start the app (<code>npm run dev</code>), log in as a supervisor, open an account, and freeze it. The status badge changes, the reason shows, the audit log has an entry. Unfreeze it. Thirty seconds.</p>
+<p><strong>Leave everything uncommitted.</strong> Module 3 reviews the working tree against <code>main</code>.</p>
+<h2 id="what-this-module-demonstrated">What this module demonstrated<a class="headerlink" href="#what-this-module-demonstrated" title="Permanent link">&para;</a></h2>
+<ul>
+<li>A fresh session proves the spec carries the implementation. Nothing learned in Module 1's conversation was needed.</li>
+<li>The implementation prompt is short because the spec and <code>AGENTS.md</code> are not. Instructions you'd put in the prompt belong in those files.</li>
+<li>Autonomy is set by three things: what the agent is forbidden to do (<code>AGENTS.md</code>), what can be undone (clean tree, <code>git restore .</code>), and where it must stop and report (phase boundaries). Permissions only set how often it asks. You earned that autonomy in Module 1; here you enforce it.</li>
+<li>A loop needs an exit condition the agent doesn't control. Here that's the spec's checks.</li>
+<li>Supervising means comparing reports to the spec, not reading code. The code review is Module 3.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../module1/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Module 1: Requirements Gathering and Spec Creation">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Module 1: Requirements Gathering and Spec Creation
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../module3/" class="md-footer__link md-footer__link--next" aria-label="Next: Module 3: Validation">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Module 3: Validation
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 The authors
+
+    </div>
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["announce.dismiss","content.code.annotate","content.code.copy","content.code.select","content.footnote.tooltips","content.tabs.link","content.tooltips","navigation.footer","navigation.indexes","navigation.instant","navigation.instant.prefetch","navigation.path","navigation.sections","navigation.tabs","navigation.top","navigation.tracking","search.highlight"],"search":"../../assets/javascripts/workers/search.b6b7e04f.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ee611ef6.min.js"></script>
+      
+        <script src="../../presentation/viewer.js"></script>
+      
+    
+  </body>
+</html>

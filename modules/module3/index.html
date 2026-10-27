@@ -1,0 +1,1228 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Hands-on workshop for spec-driven development with agentic coding tools: requirements, spec, implementation, and verification.">
+      
+      
+        <meta name="author" content="Hemanth Battu">
+      
+      
+        <link rel="canonical" href="https://hbattu73.github.io/sdd-workshop-guide/modules/module3/">
+      
+      
+        <link rel="prev" href="../module2/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.46">
+    
+    
+      
+        <title>Module 3: Validation - Agentic Engineering in Practice</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.19d3147f.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.dfe2e883.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../presentation/viewer.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-3-validation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Agentic Engineering in Practice" class="md-header__button md-logo" aria-label="Agentic Engineering in Practice" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-blocks" viewBox="0 0 24 24"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect width="8" height="8" x="14" y="2" rx="1"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Agentic Engineering in Practice
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Module 3: Validation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../prework/" class="md-tabs__link">
+          
+  
+  Prework
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../presentation/" class="md-tabs__link">
+          
+  
+  Presentation
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  Modules
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Agentic Engineering in Practice" class="md-nav__button md-logo" aria-label="Agentic Engineering in Practice" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-blocks" viewBox="0 0 24 24"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect width="8" height="8" x="14" y="2" rx="1"/></svg>
+
+    </a>
+    Agentic Engineering in Practice
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../.." class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Home
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Home
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../prework/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Prework
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Prework
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../presentation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Presentation
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Presentation
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Modules
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Modules
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Module 0: Get to Know Your Agentic Tool
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Module 1: Requirements Gathering and Spec Creation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Module 2: Spec Implementation
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Module 3: Validation
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Module 3: Validation
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-look-at-the-blast-radius" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1. Look at the blast radius
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-built-in-review-is-the-code-right-on-its-own-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2. Built-in review: is the code right on its own terms?
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-independent-review-does-the-code-match-the-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3. Independent review: does the code match the spec?
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-human-gate-does-the-spec-match-the-need" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        4. The human gate: does the spec match the need?
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-close-the-loop-through-the-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        5. Close the loop through the spec
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-demonstrated" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        What this module demonstrated
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-look-at-the-blast-radius" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1. Look at the blast radius
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-built-in-review-is-the-code-right-on-its-own-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2. Built-in review: is the code right on its own terms?
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-independent-review-does-the-code-match-the-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3. Independent review: does the code match the spec?
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-human-gate-does-the-spec-match-the-need" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        4. The human gate: does the spec match the need?
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-close-the-loop-through-the-spec" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        5. Close the loop through the spec
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-demonstrated" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        What this module demonstrated
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+<h1 id="module-3-validation">Module 3: Validation<a class="headerlink" href="#module-3-validation" title="Permanent link">&para;</a></h1>
+<p>Module 2 ended with every phase check green. Green means the agent built what the spec said. It doesn't mean the spec said the right thing, and it doesn't mean the code is right in ways the spec never mentioned. Validation asks the two questions green checks can't:</p>
+<ol>
+<li><strong>Does the code match the spec?</strong> (implementation drift)</li>
+<li><strong>Does the spec match the need?</strong> (spec drift)</li>
+</ol>
+<p>In spec-driven development, validation validates the spec as much as the code, and the loop closes by changing the spec, not by patching around it.</p>
+<table>
+<thead>
+<tr>
+<th>Mechanism</th>
+<th>Reads</th>
+<th>Catches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/review</code></td>
+<td>the diff</td>
+<td>code that's wrong on its own terms: bugs, conventions, weak tests</td>
+</tr>
+<tr>
+<td>Independent reviewer (Ask mode)</td>
+<td>the diff, <code>spec.md</code>, <code>requirements.md</code></td>
+<td>code that doesn't match the spec; risks the spec didn't cover</td>
+</tr>
+<tr>
+<td>Human gate</td>
+<td>both reports, plus what you know about the product</td>
+<td>whether the spec itself needs to change, and what the team will accept</td>
+</tr>
+</tbody>
+</table>
+<p>Human ownership comes back up here. The agents find; you decide.</p>
+<p>Everything in a grey code block is pasted to Bob or the terminal verbatim. The <strong>Expect</strong> and <strong>Notice</strong> notes describe what a good run looks like.</p>
+<div class="admonition info">
+<p class="admonition-title">Before you start</p>
+<ul>
+<li>Module 2's build is finished and uncommitted. <code>git status</code> shows changes under <code>api/</code> and <code>web/</code>, plus <code>requirements.md</code> and <code>spec.md</code> as new files.</li>
+<li>The dev server is stopped.</li>
+</ul>
+</div>
+<hr />
+<h2 id="1-look-at-the-blast-radius">1. Look at the blast radius<a class="headerlink" href="#1-look-at-the-blast-radius" title="Permanent link">&para;</a></h2>
+<p>In the terminal:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>diff<span class="w"> </span>--stat<span class="w"> </span>main
+</span></code></pre></div>
+<p>Then open one changed file you understand and read one new function. Not the whole diff. One function, and ask yourself whether you'd have written it that way.</p>
+<p><strong>Why first.</strong> Before any agent tells you what to think about the code, get your own impression of its size and shape:</p>
+<ul>
+<li>A diff much bigger than you expected is a finding by itself.</li>
+<li>Reading one function keeps you reading code in this module, not just reports.</li>
+</ul>
+<p><strong>Notice.</strong> Files you didn't expect. If the diff touches something the spec never named, write it down; it goes to the gate.</p>
+<h2 id="2-built-in-review-is-the-code-right-on-its-own-terms">2. Built-in review: is the code right on its own terms?<a class="headerlink" href="#2-built-in-review-is-the-code-right-on-its-own-terms" title="Permanent link">&para;</a></h2>
+<p><img alt="The /review summary in the chat: each finding with its severity, file and lines, an explanation and a suggested fix" src="../../assets/module3/review-findings.png" /></p>
+<p>In the Bob panel, type <code>/review</code>. Set the comparison branch to <strong>main</strong>, tick <strong>Include uncommitted changes</strong>, and start it. It runs auto-approved and takes a minute or two.</p>
+<p><strong>Expect.</strong> Findings in the <strong>Bob Findings</strong> tab, grouped by file: the kind of thing a careful colleague flags on a pull request. Some will be sharp, some pedantic, and one or two will be wrong.</p>
+<p>Read them. Click <strong>Go to file</strong> on the two or three that look real. Do <strong>not</strong> click <strong>Fix with Bob</strong>, on any of them, yet.</p>
+<p><strong>Why not Fix with Bob.</strong> The button collapses two steps that have to stay separate:</p>
+<ol>
+<li>Is this finding right?</li>
+<li>Do we want this change?</li>
+</ol>
+<p>This reviewer reads the diff and nothing else. It doesn't know that a duplicated check might be deliberate, or that an error message's wording came from an interview decision. Fixing before deciding puts the reviewer's opinion into your code with no record of why. You decide in step 4.</p>
+<p><strong>What this reviewer can and can't tell you.</strong> It's good at the first question in the table and badly placed for the second. It has never seen the spec, so it can tell you whether the code is tidy, not whether the code does what was agreed. That's what the next reviewer is for.</p>
+<h2 id="3-independent-review-does-the-code-match-the-spec">3. Independent review: does the code match the spec?<a class="headerlink" href="#3-independent-review-does-the-code-match-the-spec" title="Permanent link">&para;</a></h2>
+<p>Start a <strong>new task</strong>. Set the mode to <strong>Ask</strong>. Paste:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Review the diff against @spec.md and @requirements.md: does the code match the spec, is it safe for a regulated fintech app, and would the tests fail if a requirement were broken? Skip what matches. Report what matters and mark which findings need a human decision.
+</span></code></pre></div>
+<p><img alt="The reviewer's report: findings grouped into what needs a human decision and what needs a test" src="../../assets/module3/validator-output.png" /></p>
+<p><strong>Expect.</strong> Bob runs <code>git diff</code> itself, reads the two markdown files, then the changed files. A few minutes. Length varies: sometimes a short report, sometimes a longer one where Bob clears items as it goes and ends with a summary. Either way, look for two groups:</p>
+<ul>
+<li><strong>Needs a human decision</strong>: the code did what the spec said and the spec didn't say enough. A failure mode the request never mentioned, a message that's correct but confusing, a field stored but never shown. Those aren't code corrections; the spec was silent on something the need required. That's spec drift.</li>
+<li><strong>Tests that wouldn't catch a break</strong>: assertions that would still pass if the behavior were removed. These need no decision, just a test.</li>
+</ul>
+<p>Bob may also say what it couldn't verify from Ask mode, usually that it didn't run the test commands. You did, at the end of Module 2.</p>
+<div class="admonition tip">
+<p class="admonition-title">If the report is long, read the end first</p>
+<p>The findings are at the bottom. Anything above them that ends in "no issue" is Bob's working.</p>
+</div>
+<p><strong>Why a new task.</strong> This reviewer must not have built the code. The Module 2 session knows every decision it made and will defend them; it reads its own code the way you read your own prose, seeing what it meant rather than what's there.</p>
+<p><strong>Why Ask mode.</strong> Ask mode cannot edit files. A reviewer that can fix things will fix things, and you're back to the Fix with Bob problem with less visibility. Making the fix impossible, rather than asking it to refrain, is the mechanism.</p>
+<p><strong>Why each clause.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Clause</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>does the code match the spec, is it safe, would the tests fail</em></td>
+<td>the three ways a feature fails review in a regulated codebase: doesn't match what was agreed, unsafe, untested in a way that lets it rot. The safety question is what lets the reviewer see past the spec.</td>
+</tr>
+<tr>
+<td><em>skip what matches</em></td>
+<td>without it the report opens with paragraphs confirming what's fine and runs out of room for what isn't</td>
+</tr>
+<tr>
+<td><em>report what matters</em></td>
+<td>the confirmed findings with file and line, so you can check one by opening one file</td>
+</tr>
+<tr>
+<td><em>mark which findings need a human decision</em></td>
+<td>separates findings with one right answer (a missing test) from tradeoffs. The gate goes through the second group only.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notice.</strong></p>
+<ul>
+<li>Findings <code>/review</code> raised that this reviewer didn't, and the reverse. Neither is the better reviewer; they hold different context, so they see different things. Module 1 was about keeping context <em>out</em> of a conversation; this is about choosing what to put <em>in</em>.</li>
+<li>Anything flagged that the spec didn't ask for. A reviewer that only walks the spec's list misses scope creep.</li>
+<li>The human-decision group. Each item there is a candidate change to the spec, not to the code.</li>
+</ul>
+<h2 id="4-the-human-gate-does-the-spec-match-the-need">4. The human gate: does the spec match the need?<a class="headerlink" href="#4-the-human-gate-does-the-spec-match-the-need" title="Permanent link">&para;</a></h2>
+<p>Before anything gets fixed, answer these three questions.</p>
+<ol>
+<li><strong>Does the code do what we agreed?</strong> Every requirement has a phase, every phase passed its check, nothing in the diff is outside the spec. If not: which gap, and is it the code that's wrong or the spec?</li>
+<li><strong>For each item marked as needing a decision: fix now, follow-up, or reject?</strong> One sentence why. Say for each <em>fix now</em> whether it's a code correction (the spec was right, the agent drifted) or a spec change (the spec was wrong or silent).</li>
+<li><strong>Would the tests catch it breaking?</strong> If someone removed the role check tomorrow, which test goes red? If the answer is none, that's a fix before merge whatever the reviewers said.</li>
+</ol>
+<p>Keep your answers to one line each. They're the input to the next step.</p>
+<p><strong>Why the gate is human.</strong> Both reviewers produce findings. Neither can decide what the team is willing to ship, whether a tradeoff goes the team's way, or whether a follow-up is really going to happen. That judgment doesn't delegate. This is the human ownership point of the module.</p>
+<h2 id="5-close-the-loop-through-the-spec">5. Close the loop through the spec<a class="headerlink" href="#5-close-the-loop-through-the-spec" title="Permanent link">&para;</a></h2>
+<p>Don't fix the code directly. Start a <strong>new task</strong> in <strong>Agent</strong> mode with Auto-approve on, and give it the gate's answers:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Update @spec.md with these review decisions: [your one-line answers from the gate]. Amend only the affected phase and add a Review section recording each decision. Then re-implement that phase and run its checks.
+</span></code></pre></div>
+<p><strong>Expect.</strong> Bob edits the affected phase, adds the Review section, then makes the change, runs that phase's checks, and reports.</p>
+<p><strong>Why through the spec.</strong></p>
+<ul>
+<li>A fix made straight in the code leaves <code>spec.md</code> describing something that no longer exists. The next person, or the next agent, builds from the old version.</li>
+<li>Routing it through the spec keeps the spec true and records why it changed. You made the decision; the agent is the clerk, as in the interview.</li>
+<li>It's the same loop as Module 2, one more time: the spec changed, so a phase gets rebuilt and checked. A finding that overturns an interview decision goes further back, to <code>requirements.md</code>, and that's the expensive path by design.</li>
+</ul>
+<hr />
+<div class="admonition tip">
+<p class="admonition-title">Swap diffs</p>
+<p>If there's time, run step 3's prompt against a neighbor's working tree instead of your own. You'll read their findings more skeptically than your own.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Don't commit from the lab machine</p>
+<p>The working tree stays uncommitted. The lab machines are wiped; copy <code>requirements.md</code> and <code>spec.md</code> out if you want to keep them.</p>
+</div>
+<h2 id="what-this-module-demonstrated">What this module demonstrated<a class="headerlink" href="#what-this-module-demonstrated" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Green checks prove the agent built the spec. Validation asks whether the code matches the spec and whether the spec matches the need; different questions, different readers.</li>
+<li>Two reviewers with different context find different things. <code>/review</code> has only the diff; the independent reviewer has the spec too. Neither replaces the other.</li>
+<li>A reviewer that cannot fix is a reviewer you can trust to only report. Ask mode enforces it.</li>
+<li>The findings that matter most are the ones the spec was silent on. Those are spec problems: you decide at the gate, an agent records the decision in <code>spec.md</code>, an agent rebuilds the phase, and the checks run the same way as the original.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../module2/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Module 2: Spec Implementation">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Module 2: Spec Implementation
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 The authors
+
+    </div>
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["announce.dismiss","content.code.annotate","content.code.copy","content.code.select","content.footnote.tooltips","content.tabs.link","content.tooltips","navigation.footer","navigation.indexes","navigation.instant","navigation.instant.prefetch","navigation.path","navigation.sections","navigation.tabs","navigation.top","navigation.tracking","search.highlight"],"search":"../../assets/javascripts/workers/search.b6b7e04f.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ee611ef6.min.js"></script>
+      
+        <script src="../../presentation/viewer.js"></script>
+      
+    
+  </body>
+</html>
